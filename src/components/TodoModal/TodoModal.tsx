@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
-
+import classNames from 'classnames';
 import type { Todo } from '../../types/Todo';
 import type { User } from '../../types/User';
 
@@ -33,7 +33,12 @@ export const TodoModal: React.FC<Props> = ({
   }, [selectedTodo, switchMode, useId]);
 
   return (
-    <div className={`modal ${switchMode ? 'is-active' : null}`} data-cy="modal">
+    <div
+      className={classNames('modal', {
+        'is-active': switchMode,
+      })}
+      data-cy="modal"
+    >
       <div className="modal-background" />
 
       {loading ? (
@@ -64,11 +69,10 @@ export const TodoModal: React.FC<Props> = ({
 
             <p className="block" data-cy="modal-user">
               <strong
-                className={
-                  selectedTodo?.completed
-                    ? 'has-text-success'
-                    : 'has-text-danger'
-                }
+                className={classNames({
+                  'has-text-success': selectedTodo?.completed,
+                  'has-text-danger': !selectedTodo?.completed,
+                })}
               >
                 {selectedTodo?.completed ? 'Done' : 'Planned'}
               </strong>

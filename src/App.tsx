@@ -9,14 +9,13 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import type { Todo } from './types/Todo';
-import { getTodo } from './services/getTodo';
 export const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [searchVal, setSearchVal] = useState<string>('');
   const [modal, setModal] = useState<boolean>(false);
   const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
-  const [filteredModalTodo, setFilteredModalTodo] = useState<Todo | null>(null);
+  // const [filteredModalTodo, setFilteredModalTodo] = useState<Todo | null>(null);
   const [status, setStatus] = useState<string>('all');
 
   useEffect(() => {
@@ -32,19 +31,22 @@ export const App: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (!modal || !selectedTodoId) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!modal || !selectedTodoId) {
+  //     return;
+  //   }
 
-    getTodo(selectedTodoId)
-      .then(setFilteredModalTodo)
-      .catch(error => {
-        //eslint-disable-next-line no-console
-        console.error('Error fetching Todo', error);
-        setFilteredModalTodo(null);
-      });
-  }, [selectedTodoId, modal]);
+  //   getTodo(selectedTodoId)
+  //     .then(setFilteredModalTodo)
+  //     .catch(error => {
+  //       //eslint-disable-next-line no-console
+  //       console.error('Error fetching Todo', error);
+  //       setFilteredModalTodo(null);
+  //     });
+  // }, [selectedTodoId, modal]);
+
+  const filteredModalTodo =
+    todos.find(todo => todo.id === selectedTodoId) || null;
 
   const filtredTodos = todos.filter(todo => {
     const matchesSearch = todo.title
@@ -79,10 +81,9 @@ export const App: React.FC = () => {
               {!loading && todos.length > 0 && (
                 <TodoList
                   todosData={filtredTodos}
-                  popup={setModal}
-                  todoId={setSelectedTodoId}
-                  slash={selectedTodoId}
-                  switchModeModal={modal}
+                  onShowModal={setModal}
+                  selectedTodoId={setSelectedTodoId}
+                  isModalOpen={modal}
                 />
               )}
             </div>

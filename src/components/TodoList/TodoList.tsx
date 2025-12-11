@@ -1,20 +1,19 @@
 import React from 'react';
 import type { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 
 type Props = {
   todosData: Todo[];
-  popup: (value: boolean) => void;
-  todoId: (value: number) => void;
-  slash: number;
-  switchModeModal: boolean;
+  onShowModal: (value: boolean) => void;
+  selectedTodoId: (value: number) => void;
+  isModalOpen: boolean;
 };
 
 export const TodoList: React.FC<Props> = ({
   todosData,
-  popup,
-  todoId,
-  slash,
-  switchModeModal,
+  onShowModal,
+  selectedTodoId,
+  isModalOpen,
 }) => (
   <table className="table is-narrow is-fullwidth">
     <thead>
@@ -44,9 +43,10 @@ export const TodoList: React.FC<Props> = ({
 
           <td className="is-vcentered is-expanded">
             <p
-              className={
-                todo.completed ? 'has-text-success' : 'has-text-danger'
-              }
+              className={classNames({
+                'has-text-success': todo.completed,
+                'has-text-danger': !todo.completed,
+              })}
             >
               {todo.title}
             </p>
@@ -56,16 +56,17 @@ export const TodoList: React.FC<Props> = ({
               data-cy="selectButton"
               className="button"
               type="button"
-              onClick={() => popup(true)}
+              onClick={() => {
+                selectedTodoId(todo.id);
+                onShowModal(true);
+              }}
             >
               <span className="icon">
                 <i
-                  className={
-                    todo.id === slash && switchModeModal
-                      ? 'far fa-eye-slash'
-                      : 'far fa-eye'
-                  }
-                  onClick={() => todoId(todo.id)}
+                  className={classNames('far', {
+                    'fa-eye-slash': isModalOpen,
+                    'fa-eye': !isModalOpen,
+                  })}
                 />
               </span>
             </button>
