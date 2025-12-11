@@ -94,7 +94,7 @@ export const App: React.FC = () => {
         <TodoModal
           switchMode={modal}
           onSwitch={setModal}
-          selectedTodo={filteredModalTodo}
+          onSelectTodoId={filteredModalTodo}
         />
       )}
     </>

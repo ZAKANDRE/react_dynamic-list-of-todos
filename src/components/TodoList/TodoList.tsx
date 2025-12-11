@@ -5,14 +5,14 @@ import classNames from 'classnames';
 type Props = {
   todosData: Todo[];
   onShowModal: (value: boolean) => void;
-  selectedTodoId: (value: number) => void;
+  onSelectTodoId: (value: number) => void;
   isModalOpen: boolean;
 };
 
 export const TodoList: React.FC<Props> = ({
   todosData,
   onShowModal,
-  selectedTodoId,
+  onSelectTodoId,
   isModalOpen,
 }) => (
   <table className="table is-narrow is-fullwidth">
@@ -57,7 +57,7 @@ export const TodoList: React.FC<Props> = ({
               className="button"
               type="button"
               onClick={() => {
-                selectedTodoId(todo.id);
+                onSelectTodoId(todo.id);
                 onShowModal(true);
               }}
             >
